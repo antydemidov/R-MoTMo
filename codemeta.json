@@ -1,0 +1,64 @@
+{
+  "@context": "http://schema.org",
+  "@type": "SoftwareSourceCode",
+  "isPartOf": {
+    "@type": "WebApplication",
+    "applicationCategory": "Computational Modeling Software Repository",
+    "operatingSystem": "Any",
+    "name": "CoMSES Model Library",
+    "url": "https://www.comses.net/codebases"
+  },
+  "publisher": {
+    "@id": "https://www.comses.net",
+    "@type": "Organization",
+    "name": "CoMSES Net",
+    "url": "https://www.comses.net"
+  },
+  "provider": {
+    "@id": "https://www.comses.net",
+    "@type": "Organization",
+    "name": "CoMSES Net",
+    "url": "https://www.comses.net"
+  },
+  "name": "Reduced Mobility Transition Model (R-MoTMo)",
+  "abstract": "",
+  "description": "The Mobility Transition Model (MoTMo) is a large scale agent-based model to simulate the private mobility demand in Germany until 2035. Here, we publish a very much reduced version of this model (R-MoTMo) which is designed to demonstrate the basic modelling ideas; the aim is by abstracting from the (empirical, technological, geographical, etc.) details to examine the feed-backs of individual decisions on the socio-technical system.",
+  "version": "1.0.0",
+  "targetProduct": {
+    "@type": "SoftwareApplication",
+    "operatingSystem": "platform_independent",
+    "applicationCategory": "Computational Model",
+    "downloadUrl": "https://www.comses.net/codebases/eef9e270-909b-4832-8228-c2f3a839f171/releases/1.0.0/download/",
+    "releaseNotes": "In the file run.py, the simulation parameters can be set in lines 13-20.\nThe simulation name (part of the name of the saved result files) is created from the input parameters (line 22-24). \nRun the file run.py to start a simulation.\nIf \"plotResults\" is set \"True\" (line 33), the plots specified in lines 35-42 are done after the simulation is finished. (To plot results from saved files without a new simulation use the file justPlot.py.)",
+    "softwareVersion": "1.0.0",
+    "identifier": "https://www.comses.net/codebases/eef9e270-909b-4832-8228-c2f3a839f171/releases/1.0.0/",
+    "sameAs": "https://www.comses.net/codebases/eef9e270-909b-4832-8228-c2f3a839f171/releases/1.0.0/",
+    "screenshot": "https://www.comses.net/images/4MZx_CGX-KuP7W2U0kJTjLiyuU4=/845/fill-205x115/32-8228-c2f3a839f171/media/sharedlibraryeef9e270-909b-4832-8228-c2f3a839f1.png"
+  },
+  "programmingLanguage": [{ "@type": "ComputerLanguage", "name": "Python 3" }],
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Gesine",
+      "familyName": "Steudle",
+      "email": "gesine.steudle@globalclimateforum.org"
+    }
+  ],
+  "identifier": "https://www.comses.net/codebases/eef9e270-909b-4832-8228-c2f3a839f171/releases/1.0.0/",
+  "dateCreated": "2022-10-31T14:15:51.370985+00:00",
+  "dateModified": "2022-12-05T13:30:12.513593+00:00",
+  "keywords": [
+    "socio-technical systems",
+    "mobility demand",
+    "social learning",
+    "expected utility"
+  ],
+  "runtimePlatform": ["None"],
+  "url": "https://www.comses.net/codebases/eef9e270-909b-4832-8228-c2f3a839f171/releases/1.0.0/",
+  "citation": [],
+  "datePublished": "2022-12-06",
+  "copyrightYear": 2022,
+  "license": "http://creativecommons.org/licenses/by/4.0/",
+  "releaseNotes": "In the file run.py, the simulation parameters can be set in lines 13-20.\nThe simulation name (part of the name of the saved result files) is created from the input parameters (line 22-24). \nRun the file run.py to start a simulation.\nIf \"plotResults\" is set \"True\" (line 33), the plots specified in lines 35-42 are done after the simulation is finished. (To plot results from saved files without a new simulation use the file justPlot.py.)",
+  "@id": "https://www.comses.net/codebases/eef9e270-909b-4832-8228-c2f3a839f171/releases/1.0.0/"
+}
