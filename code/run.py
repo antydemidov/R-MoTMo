@@ -57,19 +57,8 @@ if __name__ == '__main__':
     world.run_simulation()
 
     # ========== plot functions ==========
-    (endTime, nCells, cellProperties, cellRecord, nPersons, personProperties,
-     personRecord, globalRecord, simParas) = load_results(parameters['simulationName'])
-
-    plot_results(plot_selection,
-                 endTime=endTime,
-                 nCells=nCells,
-                 cellProperties=cellProperties,
-                 cellRecord=cellRecord,
-                 nPersons=nPersons,
-                 personProperties=personProperties,
-                 personRecord=personRecord,
-                 globalRecord=globalRecord,
-                 simParas=simParas)
+    results = load_results(parameters['simulationName'])
+    plot_results(plot_selection, **results)
 
     densities = Inputs.density.flatten()
     utilmax = [max(tools.gaussian((max(densities)-min(densities)) / 2,

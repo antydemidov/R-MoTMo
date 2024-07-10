@@ -29,8 +29,17 @@ def load_results(name):
     global_record = np.load(name+'globalRecord.npy')
     time_steps = len(cell_record)
     end_time = time_steps - 1
-    return (end_time, n_cells, cell_properties, cell_record, n_persons,
-            person_properties, person_record, global_record, sim_paras)
+    return {
+        'endTime': end_time,
+        'nCells': n_cells,
+        'cellProperties': cell_properties,
+        'cellRecord': cell_record,
+        'nPersons': n_persons,
+        'personProperties': person_properties,
+        'personRecord': person_record,
+        'globalRecord': global_record,
+        'simParas': sim_paras
+    }
 
 # ========== plot functions ==========
 x_map = Inputs.density.shape[0]

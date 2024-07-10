@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| **Author:** | Gesine Steudle |
-| **Updated by:** | Anton Demidov |
-| **Keywords:** | socio-technical systems, mobility demand, social learning, expected utility|
+| **Author** | Gesine Steudle |
+| **Updated by** | Anton Demidov |
+| **Keywords** | socio-technical systems, mobility demand, social learning, expected utility|
 | **License** | [CC-BY-4.0](http://creativecommons.org/licenses/by/4.0/) |
-| **Read more:** | [Reduced Mobility Transition Model (R-MoTMo) (comses.net/)](https://www.comses.net/codebases/eef9e270-909b-4832-8228-c2f3a839f171/releases/1.0.0/) |
-| **Documentation:** | [Reduced_MoTMo_ODD](./docs/Reduced_MoTMo_ODD.pdf) |
+| **Read more** | [Reduced Mobility Transition Model (R-MoTMo) (comses.net/)](https://www.comses.net/codebases/eef9e270-909b-4832-8228-c2f3a839f171/releases/1.0.0/) |
+| **Documentation** | [Reduced_MoTMo_ODD](./docs/Reduced_MoTMo_ODD.pdf) |
 
 The Mobility Transition Model (MoTMo) is a large scale agent-based model to simulate the private mobility demand in Germany until 2035. Here, we publish a very much reduced version of this model (R-MoTMo) which is designed to demonstrate the basic modelling ideas; the aim is by abstracting from the (empirical, technological, geographical, etc.) details to examine the feed-backs of individual decisions on the socio-technical system.
 
