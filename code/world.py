@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Apr  7 13:29:07 2022
+Created on Thu Apr 7 13:29:07 2022
 
 @author: gesine steudle
 """
+
 import copy as cp
-# import json
 import random as rd
 
 import numpy as np
+import tools
 from cell import Cell
 from inputs import Inputs
 # from mobilityTypes import CombustionCar
 from person import Person
-from tools import Tools
+
+if __name__ == '__main__':
+    print('Please, use run.py to run the simulation.')
 
 
 class World:
@@ -53,11 +56,13 @@ class World:
 
     def init_population(self, density_type: int):
         """Returns the chosen density."""
+
         density = Inputs.init_density(density_type)
         return density
 
     def init_cells(self, bonus: bool, malus: bool):
         """Initialize and return a list of `Cell` objects based on the population grid."""
+
         population = self.population
         rows, cols = len(population), len(population[0])
 
@@ -69,16 +74,9 @@ class World:
 
         return cells
 
-    # def init_cells(self, bonus: bool, malus: bool):
-    #     cells = []
-    #     for x in range(len(self.population)):
-    #         for y in range(len(self.population[0])):
-    #             cell = Cell([x, y], self.population[x][y], bonus, malus)
-    #             cells.append(cell)
-    #     return cells
-
     def init_persons(self):
         """Initialize persons and distribute them across cells based on cell density."""
+
         persons = Inputs.create_persons()
         persons_distributed = 0
 
@@ -93,19 +91,9 @@ class World:
 
         return persons
 
-    # def init_persons(self):
-    #     persons = Inputs.create_persons()
-    #     persons_distributed = 0
-    #     for cell in self.cells:
-    #         persons_in_vell = [persons[i] for i in range(
-    #             persons_distributed, persons_distributed + cell.final['density'])]
-    #         cell.persons = persons_in_vell
-    #         for person in persons_in_vell:
-    #             person.cell = cell
-    #         persons_distributed += cell.final['density']
-    #     return persons
-
     def generate_social_network(self, n_friends: int):
+        """Generates friends network for all persons."""
+
         for person in self.persons:
             persons = cp.copy(self.persons)
             persons.remove(person)
@@ -114,6 +102,8 @@ class World:
                                     self.parameters['friendsLocally'])
 
     def init_mobility_choices(self, init_choice: int):
+        """Creates mobility choices."""
+
         if init_choice == 1:
             mob_types = Inputs.init_choice_1
         elif init_choice == 2:
@@ -130,6 +120,11 @@ class World:
             person.update_utility()
 
     def finalize_init(self):
+        """
+        Creates data structures for the variables and constants of all object
+        and saves them.
+        """
+
         name = self.parameters['simulationName']
         cell_properties = np.zeros((len(self.cells), Cell.final_attributes))
         person_properties = np.zeros((len(self.persons), Person.final_attributes))
@@ -137,10 +132,9 @@ class World:
         for key, value in self.mob_type_dict.items():
             mobility_types[value] = key
 
-        Tools.save_json_to_file(name+'mobilityTypes.json',
+        tools.save_json_to_file(name+'mobilityTypes.json',
                                 mobility_types, self.parameters['encoding'])
-        # with open(name+'mobilityTypes.json', 'w', encoding='utf-8') as file:
-        #     json.dump(mobility_types, file)
+
         for person in self.persons:
             for k, key in enumerate(person.final.keys()):
                 person_properties[person.id][k] = person.final[key]
@@ -150,23 +144,21 @@ class World:
             for k, key in enumerate(cell.final.keys()):
                 cell_properties[cell.id][k] = cell.final[key]
 
-        Tools.save_json_to_file(name+'personsInCell.json',
+        tools.save_json_to_file(name+'personsInCell.json',
                                 persons_in_cell, self.parameters['encoding'])
-        # with open(name+'personsInCell.json', 'w', encoding='utf-8') as file:
-        #     json.dump(persons_in_cell, file)
 
         np.save(name+'cellProperties', cell_properties)
         np.save(name+'personProperties', person_properties)
 
-        Tools.save_json_to_file(name+'worldParameters.json',
+        tools.save_json_to_file(name+'worldParameters.json',
                                 self.parameters, self.parameters['encoding'])
-        # with open(name+'worldParameters.json', 'w', encoding='utf-8') as file:
-        #     json.dump(self.parameters, file)
     # -- End Init -----
 
 
     # ----- Run and Save -----
     def run_simulation(self):
+        """Runs the simulation."""
+
         time_steps = self.parameters['timeSteps']
         name = self.parameters['simulationName']
 
@@ -192,6 +184,8 @@ class World:
 
     # ----- World Time Step -----
     def step(self, time: int):
+        """Moves the model to the next step."""
+
         utilities = []
         utilities_car = []
         utilities_public = []
@@ -216,7 +210,7 @@ class World:
             person.update_utility()
 
         for person in self.persons:
-            person.step(self.time, self.parameters['weightFriends'])
+            person.step(self.parameters['weightFriends'])
 
             # --- calculate global record ---
             for k, key in enumerate(person.variable.keys()):

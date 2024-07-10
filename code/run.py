@@ -6,12 +6,10 @@ Created on Thu Apr 7 13:29:07 2022
 @author: gesine steudle
 """
 
-
+import tools
 from inputs import Inputs
 from plotResults import load_results, plot_results
-from tools import Tools
 from world import World
-
 
 # ========== simulation parameters ==========
 parameters = {
@@ -27,7 +25,10 @@ parameters = {
     'encoding': 'utf-8'  # use encodings from codecs library
 }
 
+results_dir_name = 'results/'  # the directory name for the results files
+
 parameters['simulationName'] = (
+    results_dir_name +
     'd'+ str(parameters['density']) +
     '-f' + str(parameters['nFriends']) +
     '-loc' + str(parameters['friendsLocally']) +
@@ -71,9 +72,9 @@ if __name__ == '__main__':
                  simParas=simParas)
 
     densities = Inputs.density.flatten()
-    utilmax = [max(Tools.gaussian((max(densities)-min(densities)) / 2,
-                                  min(densities), d) * 100 + 1,
-                   Tools.gaussian((max(densities)-min(densities)) / 2,
-                                  max(densities), d) * 100 + 1) for d in densities]
+    utilmax = [max(tools.gaussian((max(densities)-min(densities)) / 2,
+                                  min(densities), density) * 100 + 1,
+                   tools.gaussian((max(densities)-min(densities)) / 2,
+                                  max(densities), density) * 100 + 1) for density in densities]
     utilmean = sum(utilmax) / len(utilmax)
     print('Mean utility is ' + str(utilmean))

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Apr  7 13:29:07 2022
+Created on Thu Apr 7 13:29:07 2022
 
 @author: gesine steudle
 """
@@ -10,12 +10,14 @@ import json
 
 import matplotlib.pyplot as plt
 import numpy as np
+import tools
 from inputs import Inputs
-from tools import Tools
 
 
 # ========== load results ==========
 def load_results(name):
+    """Loads results from files."""
+
     with open(name+'worldParameters.json', encoding='utf-8') as file:
         sim_paras = json.load(file)
     cell_properties = np.load(name+'cellProperties.npy')
@@ -36,7 +38,11 @@ y_map = Inputs.density.shape[1]
 
 
 def plot_usage_per_cell(time_steps, n_cells, cell_properties, cell_record,
-                        all_cells=True, coordinates=[0, 0]):
+                        all_cells=True, coordinates=None):
+    """Builds plot of usage per cell."""
+
+    if not coordinates:
+        coordinates = [0, 0]
     time = list(range(time_steps))
 
     def plot_cell(time, users_brown, users_public):
@@ -54,19 +60,23 @@ def plot_usage_per_cell(time_steps, n_cells, cell_properties, cell_record,
             if (cell_properties[cell_id][0] == coordinates[0] and
                 cell_properties[cell_id][1] == coordinates[1]):
                 users_brown = [cell_record[t][cell_id][2]
-                              for t in range(time_steps)]
-                users_public = [cell_record[t][cell_id][3]
                                for t in range(time_steps)]
+                users_public = [cell_record[t][cell_id][3]
+                                for t in range(time_steps)]
                 plot_cell(time, users_brown, users_public)
                 break
 
 
 def plot_population_density(simParas):
-    Tools.density_plot(
-        Inputs.density, title='population map ' + str(simParas['density']))
+    """Builds a plot of population density."""
+
+    tools.density_plot(
+        Inputs.density, title='Population map ' + str(simParas['density']))
 
 
 def plot_convenience(t, n_cells, cell_properties, cell_record, mob_type):
+    """Builds a plot of convenience."""
+
     convenience = np.zeros((x_map, y_map))
     for cell_id in range(n_cells):
         convenience[int(cell_properties[cell_id][0])][int(
@@ -77,18 +87,24 @@ def plot_convenience(t, n_cells, cell_properties, cell_record, mob_type):
         elif mob_type == 1:
             title = 'Public transport conveniences'
             colours = 'Greens'
-    Tools.density_plot(convenience, title=title, cmap=colours)
+
+    tools.density_plot(convenience, title=title, cmap=colours)
 
 
 def plot_usage(t, n_cells, cell_properties, cell_record):
+    """Builds a plot of usage."""
+
     car_usage = np.zeros((x_map, y_map))
     for cell_id in range(n_cells):
-        car_usage[int(cell_properties[cell_id][0])][int(
-            cell_properties[cell_id][1])] = cell_record[t][cell_id][2] / cell_properties[cell_id][2]
-    Tools.density_plot(car_usage, title="Car usage, t=" + str(t), cmap="Greys")
+        car_usage[int(cell_properties[cell_id][0])][int(cell_properties[
+            cell_id][1])] = cell_record[t][cell_id][2] / cell_properties[cell_id][2]
+
+    tools.density_plot(car_usage, title='Car usage, t=' + str(t), cmap='Greys')
 
 
 def plot_utility_over_time(time_steps, utilities):
+    """Builds a plot of utility over time."""
+
     time = [t for t in range(time_steps)]
     fig = plt.figure()
     plt.plot(time, utilities)
@@ -96,6 +112,8 @@ def plot_utility_over_time(time_steps, utilities):
 
 
 def plot_utilities_over_time(time_steps, utilities, utilities_car, utilities_public):
+    """Builds a plot of utilities over time."""
+
     time = list(range(time_steps))
     fig = plt.figure()
     plt.plot(time, utilities)
@@ -105,6 +123,8 @@ def plot_utilities_over_time(time_steps, utilities, utilities_car, utilities_pub
 
 
 def plot_similarity_over_time(time_steps, similarity):
+    """Builds a plot of similarity over time."""
+
     time = list(range(time_steps))
     fig = plt.figure()
     plt.plot(time, similarity)
@@ -114,33 +134,34 @@ def plot_similarity_over_time(time_steps, similarity):
 # ========== plot results ==========
 
 def plot_results(selection, **results):
+    """Builds plots for the results."""
 
     if selection['population']:
         plot_population_density(results['simParas'])
 
     if selection['conveniencesStart']:
         plot_convenience(0,
-                        results['nCells'],
-                        results['cellProperties'],
-                        results['cellRecord'],
-                        mob_type=0)
+                         results['nCells'],
+                         results['cellProperties'],
+                         results['cellRecord'],
+                         mob_type=0)
         plot_convenience(0,
-                        results['nCells'],
-                        results['cellProperties'],
-                        results['cellRecord'],
-                        mob_type=1)
+                         results['nCells'],
+                         results['cellProperties'],
+                         results['cellRecord'],
+                         mob_type=1)
 
     if selection['conveniencesEnd']:
         plot_convenience(results['endTime'],
-                        results['nCells'],
-                        results['cellProperties'],
-                        results['cellRecord'],
-                        mob_type=0)
+                         results['nCells'],
+                         results['cellProperties'],
+                         results['cellRecord'],
+                         mob_type=0)
         plot_convenience(results['endTime'],
-                        results['nCells'],
-                        results['cellProperties'],
-                        results['cellRecord'],
-                        mob_type=1)
+                         results['nCells'],
+                         results['cellProperties'],
+                         results['cellRecord'],
+                         mob_type=1)
 
     for coordinates in selection['usagePerCell']:
         plot_usage_per_cell(results['endTime']+1,

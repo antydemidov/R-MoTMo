@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue Aug  2 10:01:57 2022
+Created on Tue Aug 2 10:01:57 2022
 
-@author: gesine
+@author: gesine steudle
 """
 
-
 from plotResults import load_results, plot_results
+
 
 simulation_name = ''
 

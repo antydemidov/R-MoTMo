@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Sep  8 12:25:07 2021
+Created on Wed Sep 8 12:25:07 2021
 
 @author: gesine steudle
 """
 
 import numpy as np
 from person import Person
-# from tools import Tools
 
 
 class Inputs:
@@ -126,7 +125,7 @@ class Inputs:
         return cls.density
 
     @classmethod
-    def create_persons(cls):
+    def create_persons(cls) -> list[Person]:
         n_persons = sum([val for sublist in cls.density for val in sublist])
         persons = []
         for _ in range(int(n_persons)):

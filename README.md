@@ -20,5 +20,7 @@ Run the file `run.py` to start a simulation. If `plotResults` is set `True`, the
 - The code was formatted;
 - The names was transformed to snake_case;
 - Encoding was added to parameters dictionary;
-- Tools was updated with new methods `save_to_file` and `save_json_to_file`;
+- Tools module was updated with new methods `save_to_file` and `save_json_to_file`;
 - Some code improvements.
+- Added some docstrings.
+- Tools were transformed from class into a set of functions.
