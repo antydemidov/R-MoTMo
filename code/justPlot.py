@@ -7,21 +7,24 @@ Created on Tue Aug 2 10:01:57 2022
 """
 
 from plotResults import load_results, plot_results
+from parameters import PlotSelection
 
 
+# ========== USER AREA ==========
 simulation_name = 'results/d1-f15-locTrue-bonTrue-malTrue-'  # directory name (if applicable) and simulation name
 
-# ========== choose plot types to show ==========
-plot_selection = {
-    'population': True,
-    'conveniencesStart': True,
-    'conveniencesEnd': True,
-    'usageMaps': True,
-    'usagePerCell': [],  # add a list of cells by coordinates, e.g. [[1, 1], [3, 4]],
-    'utilityOverTime': True,
-    'carUsageOverTime': False,
-    'similarityOverTime': False
-}
+# ---------- choose plot types to show ----------
+plot_selection = PlotSelection(
+    population=True,
+    conveniences_start=False,
+    conveniences_end=False,
+    usage_maps=False,
+    usage_per_cell=[],
+    utility_over_time=False,
+    car_usage_over_time=False,
+    similarity_over_time=False
+)
+# ========== END OF USER AREA ==========
 
 
 if __name__ == '__main__':
