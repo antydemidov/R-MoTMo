@@ -1,11 +1,13 @@
 # Reduced Mobility Transition Model (R-MoTMo)
 
-**Author:** Gesine Steudle;
-**Updated by:** Anton Demidov;
-**Keywords:** socio-technical systems, mobility demand, social learning, expected utility.
-**License**: [CC-BY-4.0](http://creativecommons.org/licenses/by/4.0/)
-**Read more:** [Reduced Mobility Transition Model (R-MoTMo) (comses.net/)](https://www.comses.net/codebases/eef9e270-909b-4832-8228-c2f3a839f171/releases/1.0.0/)
-**Documentation:** [Reduced_MoTMo_ODD](./docs/Reduced_MoTMo_ODD.pdf)
+| | |
+|---|---|
+| **Author:** | Gesine Steudle |
+| **Updated by:** | Anton Demidov |
+| **Keywords:** | socio-technical systems, mobility demand, social learning, expected utility|
+| **License** | [CC-BY-4.0](http://creativecommons.org/licenses/by/4.0/) |
+| **Read more:** | [Reduced Mobility Transition Model (R-MoTMo) (comses.net/)](https://www.comses.net/codebases/eef9e270-909b-4832-8228-c2f3a839f171/releases/1.0.0/) |
+| **Documentation:** | [Reduced_MoTMo_ODD](./docs/Reduced_MoTMo_ODD.pdf) |
 
 The Mobility Transition Model (MoTMo) is a large scale agent-based model to simulate the private mobility demand in Germany until 2035. Here, we publish a very much reduced version of this model (R-MoTMo) which is designed to demonstrate the basic modelling ideas; the aim is by abstracting from the (empirical, technological, geographical, etc.) details to examine the feed-backs of individual decisions on the socio-technical system.
 
@@ -24,3 +26,14 @@ Run the file `run.py` to start a simulation. If `plotResults` is set `True`, the
 - Some code improvements.
 - Added some docstrings.
 - Tools were transformed from class into a set of functions.
+
+## Requirements
+
+- [matplotlib](https://matplotlib.org/);
+- [numpy](https://numpy.org/).
+
+Use this to install requirements automatically or just install them manually:
+
+```sh
+pip install -r requirements.txt
+```
