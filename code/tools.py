@@ -7,8 +7,8 @@ Created on Thu Apr 7 13:29:07 2022
 """
 
 import json
-import os
 import math
+import os
 
 import matplotlib.pyplot as plt
 
@@ -30,11 +30,12 @@ def gaussian(sigma, mu, rho):
 def density_plot(density, title="Density Plot", cmap="Oranges"):
     """Creates a density plot."""
 
-    plt.figure()
+    fig = plt.figure()
     plt.imshow(density, cmap)
     plt.title(title)
     plt.colorbar()
     plt.show()
+    return fig
 
 
 def euclidean_distance(coordinates_a, coordinates_b):

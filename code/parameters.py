@@ -7,6 +7,7 @@ Created on Thu Apr 7 13:29:07 2022
 """
 
 from dataclasses import dataclass, field
+import os
 
 
 @dataclass
@@ -28,21 +29,21 @@ class Parameters:
     print_details: bool = False
     encoding: str = 'utf-8'
     """Use encodings from codecs library."""
-    dir_name: str = 'results/'
+    dir_name: str = 'results'
     """Directory name for results files."""
+    save_plots: bool = False
+    plot_dir_name: str = 'plots'
 
     def simulation_name(self):
         """Returns the name of the simulation."""
-        assert self.dir_name.endswith('/')
-        return (
-            self.dir_name
-            + 'd'+ str(self.density)
+        name = (
+            'd'+ str(self.density)
             + '-f' + str(self.n_friends)
             + '-loc' + str(self.friends_locally)
             + '-bon' + str(self.convenience_bonus)
             + '-mal' + str(self.convenience_malus)
-            + '-'
-        )
+            + '-')
+        return os.path.join(self.dir_name, name)
 
 
 @dataclass
@@ -58,3 +59,4 @@ class PlotSelection:
     similarity_over_time: bool = False
     usage_per_cell: list[int] = field(default_factory=list)
     """Add a list of cells by coordinates, e.g. [[1, 1], [3, 4]]"""
+    save_plots: bool = False

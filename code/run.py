@@ -16,13 +16,20 @@ from world import World
 # ========== USER AREA ==========
 # ---------- simulation parameters ----------
 parameters = Parameters(
-    time_steps=50
+    time_steps=50,
+    save_plots=True
 )
 
 # ---------- choose plot types to show ----------
 plot_selection = PlotSelection(
+    population=True,
+    conveniences_start=True,
+    conveniences_end=True,
     usage_maps=True,
-    usage_per_cell=[[1, 1]]
+    utility_over_time=True,
+    car_usage_over_time=True,
+    similarity_over_time=True,
+    usage_per_cell=[[1, 1], [1, 3]]
 )
 # ========== END OF USER AREA ==========
 
@@ -35,7 +42,7 @@ def main(params: Parameters, plots: PlotSelection):
 
     # ---------- plot functions ----------
     results = load_results(params.simulation_name())
-    plot_results(plots, **results)
+    plot_results(plots, params, **results)
 
     densities = Inputs.density.flatten()
     utilmax = [max(tools.gaussian((max(densities)-min(densities)) / 2,

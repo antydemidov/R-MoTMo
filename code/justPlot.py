@@ -7,11 +7,14 @@ Created on Tue Aug 2 10:01:57 2022
 """
 
 from plotResults import load_results, plot_results
-from parameters import PlotSelection
+from parameters import PlotSelection, Parameters
 
 
 # ========== USER AREA ==========
 simulation_name = 'results/d1-f15-locTrue-bonTrue-malTrue-'  # directory name (if applicable) and simulation name
+params = Parameters(
+    save_plots=False
+)
 
 # ---------- choose plot types to show ----------
 plot_selection = PlotSelection(
@@ -29,4 +32,4 @@ plot_selection = PlotSelection(
 
 if __name__ == '__main__':
     results = load_results(simulation_name)
-    plot_results(plot_selection, **results)
+    plot_results(plot_selection, params, **results)
