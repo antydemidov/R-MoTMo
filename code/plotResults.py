@@ -10,6 +10,7 @@ import json
 
 import matplotlib.pyplot as plt
 import numpy as np
+from parameters import PlotSelection
 import tools
 from inputs import Inputs
 
@@ -19,7 +20,7 @@ def load_results(name):
     """Loads results from files."""
 
     with open(name+'worldParameters.json', encoding='utf-8') as file:
-        sim_paras = json.load(file)
+        sim_params = json.load(file)
     cell_properties = np.load(name+'cellProperties.npy')
     person_properties = np.load(name+'personProperties.npy')
     n_cells = len(cell_properties)
@@ -38,7 +39,7 @@ def load_results(name):
         'personProperties': person_properties,
         'personRecord': person_record,
         'globalRecord': global_record,
-        'simParas': sim_paras
+        'simParas': sim_params
     }
 
 # ========== plot functions ==========
@@ -56,6 +57,7 @@ def plot_usage_per_cell(time_steps, n_cells, cell_properties, cell_record,
 
     def plot_cell(time, users_brown, users_public):
         fig = plt.figure()
+        plt.title(f'Usage in cell: [{coordinates[0]}, {coordinates[1]}]')
         plt.plot(time, users_brown)
         plt.plot(time, users_public)
         fig.show()
@@ -76,11 +78,11 @@ def plot_usage_per_cell(time_steps, n_cells, cell_properties, cell_record,
                 break
 
 
-def plot_population_density(simParas):
+def plot_population_density(sim_params):
     """Builds a plot of population density."""
 
     tools.density_plot(
-        Inputs.density, title='Population map ' + str(simParas['density']))
+        Inputs.density, title=f'Population map {sim_params["density"]}')
 
 
 def plot_convenience(t, n_cells, cell_properties, cell_record, mob_type):
@@ -108,14 +110,15 @@ def plot_usage(t, n_cells, cell_properties, cell_record):
         car_usage[int(cell_properties[cell_id][0])][int(cell_properties[
             cell_id][1])] = cell_record[t][cell_id][2] / cell_properties[cell_id][2]
 
-    tools.density_plot(car_usage, title='Car usage, t=' + str(t), cmap='Greys')
+    tools.density_plot(car_usage, title=f'Car usage, t={t}', cmap='Greys')
 
 
 def plot_utility_over_time(time_steps, utilities):
     """Builds a plot of utility over time."""
 
-    time = [t for t in range(time_steps)]
+    time = list(range(time_steps))
     fig = plt.figure()
+    plt.title('Utility over time')
     plt.plot(time, utilities)
     fig.show()
 
@@ -125,6 +128,7 @@ def plot_utilities_over_time(time_steps, utilities, utilities_car, utilities_pub
 
     time = list(range(time_steps))
     fig = plt.figure()
+    plt.title('Utilities over time')
     plt.plot(time, utilities)
     plt.plot(time, utilities_public)
     plt.plot(time, utilities_car)
@@ -136,19 +140,20 @@ def plot_similarity_over_time(time_steps, similarity):
 
     time = list(range(time_steps))
     fig = plt.figure()
+    plt.title('Similarity over time')
     plt.plot(time, similarity)
     fig.show()
 
 
 # ========== plot results ==========
 
-def plot_results(selection, **results):
+def plot_results(selection: PlotSelection, **results):
     """Builds plots for the results."""
 
-    if selection['population']:
+    if selection.population:
         plot_population_density(results['simParas'])
 
-    if selection['conveniencesStart']:
+    if selection.conveniences_start:
         plot_convenience(0,
                          results['nCells'],
                          results['cellProperties'],
@@ -160,7 +165,7 @@ def plot_results(selection, **results):
                          results['cellRecord'],
                          mob_type=1)
 
-    if selection['conveniencesEnd']:
+    if selection.conveniences_end:
         plot_convenience(results['endTime'],
                          results['nCells'],
                          results['cellProperties'],
@@ -172,7 +177,7 @@ def plot_results(selection, **results):
                          results['cellRecord'],
                          mob_type=1)
 
-    for coordinates in selection['usagePerCell']:
+    for coordinates in selection.usage_per_cell:
         plot_usage_per_cell(results['endTime']+1,
                             results['nCells'],
                             results['cellProperties'],
@@ -180,7 +185,7 @@ def plot_results(selection, **results):
                             False,
                             coordinates)
 
-    if selection['usageMaps']:
+    if selection.usage_maps:
         plot_usage(0,
                    results['nCells'],
                    results['cellProperties'],
@@ -194,16 +199,16 @@ def plot_results(selection, **results):
                    results['cellProperties'],
                    results['cellRecord'])
 
-    if selection['utilityOverTime']:
+    if selection.utility_over_time:
         plot_utilities_over_time(results['endTime'] + 1,
                                  results['globalRecord'][:, 1],
                                  results['globalRecord'][:, 2],
                                  results['globalRecord'][:, 3])
 
-    if selection['carUsageOverTime']:
+    if selection.car_usage_over_time:
         plot_utility_over_time(results['endTime'] + 1,
                                results['globalRecord'][:, 0])
 
-    if selection['similarityOverTime']:
+    if selection.similarity_over_time:
         plot_similarity_over_time(results['endTime'] + 1,
                                   results['globalRecord'][:, 4])

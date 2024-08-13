@@ -8,11 +8,13 @@ Created on Thu Apr 7 13:29:07 2022
 
 import copy as cp
 import random as rd
+from dataclasses import asdict
 
 import numpy as np
 import tools
 from cell import Cell
 from inputs import Inputs
+from parameters import Parameters
 # from mobilityTypes import CombustionCar
 from person import Person
 
@@ -24,7 +26,7 @@ class World:
     """Representates a simulation world, which contains cells, persons, etc."""
 
     # ----- Initialize -----
-    def __init__(self, parameters: dict):
+    def __init__(self, parameters: Parameters):
         self.cell_record: np.ndarray = None
         self.person_record: np.ndarray = None
         self.global_record: np.ndarray = None
@@ -38,19 +40,19 @@ class World:
             'meanUtility': 0,
             'meanUtilityCar': 0,
             'meanUtilityPublic': 0,
-            'meanSimilarity': parameters['nFriends'] / 2
+            'meanSimilarity': parameters.n_friends / 2
         }
 
         # ----- setup simulation -----
         Cell.count = 0
         Person.count = 0
-        self.population = self.init_population(parameters['density'])
-        self.cells: list[Cell] = self.init_cells(self.parameters['convenienceBonus'],
-                                                 self.parameters['convenienceMalus'])
+        self.population = self.init_population(parameters.density)
+        self.cells: list[Cell] = self.init_cells(self.parameters.convenience_bonus,
+                                                 self.parameters.convenience_malus)
         self.persons: list[Person] = self.init_persons()
         self.n_persons = len(self.persons)
-        self.init_mobility_choices(parameters['initialChoice'])
-        self.generate_social_network(parameters['nFriends'])
+        self.init_mobility_choices(parameters.initial_choice)
+        self.generate_social_network(parameters.n_friends)
         self.finalize_init()
         self.time = 0
 
@@ -99,7 +101,7 @@ class World:
             persons.remove(person)
             person.generate_friends(persons,
                                     n_friends,
-                                    self.parameters['friendsLocally'])
+                                    self.parameters.friends_locally)
 
     def init_mobility_choices(self, init_choice: int):
         """Creates mobility choices."""
@@ -125,7 +127,7 @@ class World:
         and saves them.
         """
 
-        name = self.parameters['simulationName']
+        name = self.parameters.simulation_name()
         cell_properties = np.zeros((len(self.cells), Cell.final_attributes))
         person_properties = np.zeros((len(self.persons), Person.final_attributes))
         mobility_types = {}
@@ -133,7 +135,7 @@ class World:
             mobility_types[value] = key
 
         tools.save_json_to_file(name+'mobilityTypes.json',
-                                mobility_types, self.parameters['encoding'])
+                                mobility_types, self.parameters.encoding)
 
         for person in self.persons:
             for k, key in enumerate(person.final.keys()):
@@ -145,13 +147,13 @@ class World:
                 cell_properties[cell.id][k] = cell.final[key]
 
         tools.save_json_to_file(name+'personsInCell.json',
-                                persons_in_cell, self.parameters['encoding'])
+                                persons_in_cell, self.parameters.encoding)
 
         np.save(name+'cellProperties', cell_properties)
         np.save(name+'personProperties', person_properties)
 
         tools.save_json_to_file(name+'worldParameters.json',
-                                self.parameters, self.parameters['encoding'])
+                                asdict(self.parameters), self.parameters.encoding)
     # -- End Init -----
 
 
@@ -159,8 +161,8 @@ class World:
     def run_simulation(self):
         """Runs the simulation."""
 
-        time_steps = self.parameters['timeSteps']
-        name = self.parameters['simulationName']
+        time_steps = self.parameters.time_steps
+        name = self.parameters.simulation_name()
 
         self.cell_record = np.zeros((time_steps,
                                      len(self.cells),
@@ -200,7 +202,7 @@ class World:
             for k, key in enumerate(cell.variable.keys()):
                 self.cell_record[self.time][cell.id][k] = cell.variable[key]
 
-                if self.parameters['printDetails']:
+                if self.parameters.print_details:
                     print("In cell #" + str(cell.id) + " is car convenience " +
                           str(cell.variable['convenienceCar']) +
                           " and public transport convenience " +
@@ -210,7 +212,7 @@ class World:
             person.update_utility()
 
         for person in self.persons:
-            person.step(self.parameters['weightFriends'])
+            person.step(self.parameters.weight_friends)
 
             # --- calculate global record ---
             for k, key in enumerate(person.variable.keys()):
