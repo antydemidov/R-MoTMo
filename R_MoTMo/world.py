@@ -62,8 +62,7 @@ class World:
     def init_population(self, density_type: int):
         """Returns the chosen density."""
 
-        density = Inputs.init_density(density_type)
-        return density
+        return Inputs.init_density(density_type)
 
     def init_cells(self, bonus: bool, malus: bool):
         """Initialize and return a list of `Cell` objects based on the population grid."""

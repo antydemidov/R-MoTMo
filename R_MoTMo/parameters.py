@@ -33,6 +33,7 @@ class Parameters:
     """Directory name for results files."""
     save_plots: bool = False
     plot_dir_name: str = 'plots'
+    save_to_csv: bool = False
 
     def simulation_name(self):
         """Returns the name of the simulation."""

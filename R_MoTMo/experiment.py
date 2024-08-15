@@ -1,4 +1,5 @@
 import numpy as np
+from R_MoTMo import tools
 
 from R_MoTMo.parameters import ExperimentParameters, Parameters, PlotSelection
 from R_MoTMo.plotResults import load_results, plot_results
@@ -35,6 +36,11 @@ class Experiment:
         results = load_results(self.sim_params.simulation_name())
         plot_results(self.plot_selection, self.sim_params, **results)
 
+        if self.sim_params.save_to_csv:
+            tools.export_to_csv(results,
+                                self.sim_params.simulation_name(),
+                                self.sim_params.encoding)
+
     def run_many(self):
         """Runs simulation more than once."""
 
@@ -50,6 +56,17 @@ class Experiment:
             global_record.append(world.global_record)
             cell_record.append(world.cell_record)
             person_record.append(world.person_record)
+
+        results = {
+            'globalRecord': global_record,
+            'cellRecord': cell_record,
+            'personRecord': person_record
+        }
+
+        if self.sim_params.save_to_csv:
+            tools.export_to_csv_by_runs(results,
+                                        self.sim_params.simulation_name(),
+                                        self.sim_params.encoding)
 
         global_record = np.array(global_record).mean(0)
         cell_record = np.array(cell_record).mean(0)
@@ -68,3 +85,8 @@ class Experiment:
         }
 
         plot_results(self.plot_selection, self.sim_params, **results)
+
+        if self.sim_params.save_to_csv:
+            tools.export_to_csv(results,
+                                self.sim_params.simulation_name(),
+                                self.sim_params.encoding)
