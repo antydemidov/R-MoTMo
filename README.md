@@ -27,7 +27,8 @@ Run the file `run.py` to start a simulation. If `plotResults` is set `True`, the
 - Added some docstrings;
 - Tools were transformed from class into a set of functions;
 - Added Parameters and PlotSelection classes to avoid dictionary usage;
-- Added functionality to save the chart to files, use `save_plots` to save the charts.
+- Added functionality to save the chart to files, use `save_plots` to save the charts;
+- Experiment class was added, you can use it to run simulations more than once.
 
 ## Requirements
 

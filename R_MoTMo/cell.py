@@ -6,8 +6,8 @@ Created on Tue Sep 7 09:03:57 2021
 @author: gesine steudle
 """
 
-from mobilityTypes import CombustionCar, PublicTransport
-from person import Person
+from R_MoTMo.mobilityTypes import CombustionCar, PublicTransport
+from R_MoTMo.person import Person
 
 
 if __name__ == '__main__':

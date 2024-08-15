@@ -11,9 +11,10 @@ import os
 
 import matplotlib.pyplot as plt
 import numpy as np
-from parameters import PlotSelection, Parameters
-import tools
-from inputs import Inputs
+
+from R_MoTMo import tools
+from R_MoTMo.inputs import Inputs
+from R_MoTMo.parameters import Parameters, PlotSelection
 
 
 # ========== load results ==========
@@ -40,7 +41,7 @@ def load_results(name):
         'personProperties': person_properties,
         'personRecord': person_record,
         'globalRecord': global_record,
-        'simParas': sim_params
+        'simParams': sim_params
     }
 
 # ========== plot functions ==========
@@ -59,9 +60,10 @@ def plot_usage_per_cell(params: Parameters, time_steps, n_cells, cell_properties
     def plot_cell(time, users_brown, users_public):
         fig = plt.figure()
         plt.title(f'Usage in cell: [{coordinates[0]}, {coordinates[1]}]')
-        plt.plot(time, users_brown)
-        plt.plot(time, users_public)
-        fig.show()
+        plt.plot(time, users_brown, label='Cars')
+        plt.plot(time, users_public, label='Public transport')
+        plt.legend(['Cars', 'Public transport'])
+        plt.show(block=True)
         if params.save_plots:
             fig.savefig(os.path.join(
                 params.plot_dir_name,
@@ -99,18 +101,20 @@ def plot_convenience(params: Parameters, t, n_cells, cell_properties,
                      cell_record, mob_type):
     """Builds a plot of convenience."""
 
+    if mob_type == 0:
+        title = 'Car conveniences'
+        file_title = 'cars'
+        colours = 'Blues'
+    elif mob_type == 1:
+        title = 'Public transport conveniences'
+        file_title = 'public'
+        colours = 'Greens'
+
     convenience = np.zeros((x_map, y_map))
     for cell_id in range(n_cells):
-        convenience[int(cell_properties[cell_id][0])][int(
-            cell_properties[cell_id][1])] = cell_record[t][cell_id][mob_type]
-        if mob_type == 0:
-            title = 'Car conveniences'
-            file_title = 'cars'
-            colours = 'Blues'
-        elif mob_type == 1:
-            title = 'Public transport conveniences'
-            file_title = 'public'
-            colours = 'Greens'
+        x_coord = int(cell_properties[cell_id][0])
+        y_coord = int(cell_properties[cell_id][1])
+        convenience[x_coord][y_coord] = cell_record[t][cell_id][mob_type]
 
     fig = tools.density_plot(convenience, title=title, cmap=colours)
     if params.save_plots:
@@ -119,13 +123,14 @@ def plot_convenience(params: Parameters, t, n_cells, cell_properties,
                     format='png')
 
 
-def plot_usage(params: Parameters, t, n_cells, cell_properties, cell_record):
+def plot_usage_map(params: Parameters, t, n_cells, cell_properties, cell_record):
     """Builds a plot of usage."""
 
     car_usage = np.zeros((x_map, y_map))
     for cell_id in range(n_cells):
-        car_usage[int(cell_properties[cell_id][0])][int(cell_properties[
-            cell_id][1])] = cell_record[t][cell_id][2] / cell_properties[cell_id][2]
+        x_coord = int(cell_properties[cell_id][0])
+        y_coord = int(cell_properties[cell_id][1])
+        car_usage[x_coord][y_coord] = cell_record[t][cell_id][2] / cell_properties[cell_id][2]
 
     fig = tools.density_plot(car_usage, title=f'Car usage, t={t}', cmap='Greys')
     if params.save_plots:
@@ -141,7 +146,7 @@ def plot_utility_over_time(params: Parameters, time_steps, utilities):
     fig = plt.figure()
     plt.title('Utility over time')
     plt.plot(time, utilities)
-    fig.show()
+    plt.show(block=True)
     if params.save_plots:
         fig.savefig(os.path.join(params.plot_dir_name,
                                  'plot_utility_over_time.png'),
@@ -158,7 +163,8 @@ def plot_utilities_over_time(params: Parameters, time_steps, utilities,
     plt.plot(time, utilities)
     plt.plot(time, utilities_public)
     plt.plot(time, utilities_car)
-    fig.show()
+    plt.legend(['Total', 'Public transport', 'Cars'])
+    plt.show(block=True)
     if params.save_plots:
         fig.savefig(os.path.join(params.plot_dir_name,
                                  'plot_utilities_over_time.png'),
@@ -191,7 +197,7 @@ def plot_results(selection: PlotSelection, params: Parameters, **results):
             os.remove(file.path)
 
     if selection.population:
-        plot_population_density(params, results['simParas'])
+        plot_population_density(params, results['simParams'])
 
     if selection.conveniences_start:
         plot_convenience(params,
@@ -231,21 +237,21 @@ def plot_results(selection: PlotSelection, params: Parameters, **results):
                             coordinates)
 
     if selection.usage_maps:
-        plot_usage(params,
-                   0,
-                   results['nCells'],
-                   results['cellProperties'],
-                   results['cellRecord'])
-        # plot_usage(params,
-        #            int(results['endTime'] / 2),
-        #            results['nCells'],
-        #            results['cellProperties'],
-        #            results['cellRecord'])
-        plot_usage(params,
-                   results['endTime'],
-                   results['nCells'],
-                   results['cellProperties'],
-                   results['cellRecord'])
+        plot_usage_map(params,
+                       0,
+                       results['nCells'],
+                       results['cellProperties'],
+                       results['cellRecord'])
+        # plot_usage_map(params,
+        #                int(results['endTime'] / 2),
+        #                results['nCells'],
+        #                results['cellProperties'],
+        #                results['cellRecord'])
+        plot_usage_map(params,
+                       results['endTime'],
+                       results['nCells'],
+                       results['cellProperties'],
+                       results['cellRecord'])
 
     if selection.utility_over_time:
         plot_utilities_over_time(params,
@@ -253,8 +259,6 @@ def plot_results(selection: PlotSelection, params: Parameters, **results):
                                  results['globalRecord'][:, 1],
                                  results['globalRecord'][:, 2],
                                  results['globalRecord'][:, 3])
-
-    if selection.car_usage_over_time:
         plot_utility_over_time(params,
                                results['endTime'] + 1,
                                results['globalRecord'][:, 0])

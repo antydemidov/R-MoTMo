@@ -7,7 +7,7 @@ Created on Wed Sep 8 12:25:07 2021
 """
 
 import numpy as np
-from person import Person
+from R_MoTMo.person import Person
 
 
 class Inputs:

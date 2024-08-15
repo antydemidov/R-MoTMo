@@ -11,12 +11,13 @@ import random as rd
 from dataclasses import asdict
 
 import numpy as np
-import tools
-from cell import Cell
-from inputs import Inputs
-from parameters import Parameters
-# from mobilityTypes import CombustionCar
-from person import Person
+
+from R_MoTMo import tools
+from R_MoTMo.cell import Cell
+from R_MoTMo.inputs import Inputs
+from R_MoTMo.parameters import Parameters
+# from R_MoTMo.mobilityTypes import CombustionCar
+from R_MoTMo.person import Person
 
 if __name__ == '__main__':
     print('Please, use run.py to run the simulation.')
@@ -27,6 +28,8 @@ class World:
 
     # ----- Initialize -----
     def __init__(self, parameters: Parameters):
+        self.cell_properties = None
+        self.person_properties = None
         self.cell_record: np.ndarray = None
         self.person_record: np.ndarray = None
         self.global_record: np.ndarray = None
@@ -150,7 +153,9 @@ class World:
                                 persons_in_cell, self.parameters.encoding)
 
         np.save(name+'cellProperties', cell_properties)
+        self.cell_properties = cell_properties
         np.save(name+'personProperties', person_properties)
+        self.person_properties = person_properties
 
         tools.save_json_to_file(name+'worldParameters.json',
                                 asdict(self.parameters), self.parameters.encoding)
@@ -171,8 +176,7 @@ class World:
                                        len(self.persons),
                                        Person.variable_attributes), dtype=float)
         self.global_record = np.zeros((time_steps,
-                                       len(self.variables),
-                                       2), dtype=float)
+                                       len(self.variables)), dtype=float)
 
         for time in range(0, time_steps):
             self.time = time
@@ -231,7 +235,7 @@ class World:
         self.variables['meanUtility'] = np.mean(utilities)
         self.variables['meanUtilityCar'] = np.mean(utilities_car)
         self.variables['meanUtilityPublic'] = np.mean(utilities_public)
-        self.variables['carUsage'] = len(utilities_car)/self.n_persons
+        self.variables['carUsage'] = len(utilities_car) / self.n_persons
         self.variables['meanSimilarity'] = np.mean(similar_list)
         for k, key in enumerate(self.variables.keys()):
             self.global_record[self.time][k] = self.variables[key]

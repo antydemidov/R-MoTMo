@@ -18,7 +18,7 @@ def create_dir(filename):
 
     dir_name = os.path.dirname(filename)
     if not os.path.exists(dir_name):
-        os.mkdir(dir_name)
+        os.makedirs(dir_name)
 
 
 def gaussian(sigma, mu, rho):

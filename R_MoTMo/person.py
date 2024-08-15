@@ -9,10 +9,11 @@ Created on Thu Apr 7 13:29:07 2022
 from typing import TYPE_CHECKING
 
 import numpy as np
-import tools
+
+from R_MoTMo import tools
 
 if TYPE_CHECKING:
-    from cell import Cell
+    from R_MoTMo.cell import Cell
 
 
 class Person:

@@ -42,7 +42,7 @@ class Parameters:
             + '-loc' + str(self.friends_locally)
             + '-bon' + str(self.convenience_bonus)
             + '-mal' + str(self.convenience_malus)
-            + '-')
+            + '/')
         return os.path.join(self.dir_name, name)
 
 
@@ -55,8 +55,15 @@ class PlotSelection:
     conveniences_end: bool = False
     usage_maps: bool = False
     utility_over_time: bool = False
-    car_usage_over_time: bool = False
     similarity_over_time: bool = False
-    usage_per_cell: list[int] = field(default_factory=list)
+    usage_per_cell: list = field(default_factory=list)
     """Add a list of cells by coordinates, e.g. [[1, 1], [3, 4]]"""
     save_plots: bool = False
+    """If True, saves plots to the specified folder."""
+
+
+@dataclass
+class ExperimentParameters:
+    """Parameters for the experiment."""
+
+    n_runs: int = 10

@@ -8,8 +8,8 @@ Created on Thu Apr 7 13:29:07 2022
 
 from abc import ABC, abstractmethod
 
-import tools
-from inputs import Inputs
+from R_MoTMo import tools
+from R_MoTMo.inputs import Inputs
 
 
 class MobilityType(ABC):
