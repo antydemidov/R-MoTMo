@@ -24,10 +24,11 @@ plot_selection = PlotSelection(
     conveniences_start=False,
     conveniences_end=False,
     usage_maps=False,
-    usage_per_cell=[[1, 1]],
     utility_over_time=False,
-    similarity_over_time=False
+    similarity_over_time=False,
+    usage_per_cell=[[1, 1]]
 )
+
 # ========== END OF USER AREA ==========
 
 

@@ -16,18 +16,18 @@ params = Parameters(
     time_steps=50,
     n_friends=2,
     save_plots=False,
-    save_to_csv=True
+    save_global_to_csv=True
 )
 
 # ---------- choose plot types to show ----------
 plot_selection = PlotSelection(
-    # population=True,
-    # conveniences_start=True,
-    # conveniences_end=True,
-    # usage_maps=True,
-    # utility_over_time=True,
-    # similarity_over_time=True,
-    # usage_per_cell=[[5, 5]]
+    population=False,
+    conveniences_start=False,
+    conveniences_end=False,
+    usage_maps=False,
+    utility_over_time=False,
+    similarity_over_time=False,
+    usage_per_cell=[[5, 5]]
 )
 
 # ---------- experiment parameters ----------

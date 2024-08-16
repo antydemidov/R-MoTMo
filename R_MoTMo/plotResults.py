@@ -18,7 +18,7 @@ from R_MoTMo.parameters import Parameters, PlotSelection
 
 
 # ========== load results ==========
-def load_results(name):
+def load_results(name: str):
     """Loads results from files."""
 
     with open(name+'worldParameters.json', encoding='utf-8') as file:

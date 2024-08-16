@@ -32,8 +32,11 @@ class Parameters:
     dir_name: str = 'results'
     """Directory name for results files."""
     save_plots: bool = False
+    """If True, saves plots to the specified folder."""
     plot_dir_name: str = 'plots'
-    save_to_csv: bool = False
+    save_global_to_csv: bool = False
+    save_cell_to_csv: bool = False
+    save_person_to_csv: bool = False
 
     def simulation_name(self):
         """Returns the name of the simulation."""
@@ -59,8 +62,6 @@ class PlotSelection:
     similarity_over_time: bool = False
     usage_per_cell: list = field(default_factory=list)
     """Add a list of cells by coordinates, e.g. [[1, 1], [3, 4]]"""
-    save_plots: bool = False
-    """If True, saves plots to the specified folder."""
 
 
 @dataclass

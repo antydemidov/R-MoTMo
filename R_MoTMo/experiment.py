@@ -28,18 +28,14 @@ class Experiment:
     def run_one(self):
         """Runs simulation ones."""
 
-        # ---------- run simulation ----------
         world = World(self.sim_params)
         world.run_simulation()
 
-        # ---------- plot functions ----------
         results = load_results(self.sim_params.simulation_name())
         plot_results(self.plot_selection, self.sim_params, **results)
 
-        if self.sim_params.save_to_csv:
-            tools.export_to_csv(results,
-                                self.sim_params.simulation_name(),
-                                self.sim_params.encoding)
+        tools.export_to_csv(results,
+                            self.sim_params)
 
     def run_many(self):
         """Runs simulation more than once."""
@@ -63,10 +59,8 @@ class Experiment:
             'personRecord': person_record
         }
 
-        if self.sim_params.save_to_csv:
-            tools.export_to_csv_by_runs(results,
-                                        self.sim_params.simulation_name(),
-                                        self.sim_params.encoding)
+        tools.export_to_csv_by_runs(results,
+                                    self.sim_params)
 
         global_record = np.array(global_record).mean(0)
         cell_record = np.array(cell_record).mean(0)
@@ -86,7 +80,5 @@ class Experiment:
 
         plot_results(self.plot_selection, self.sim_params, **results)
 
-        if self.sim_params.save_to_csv:
-            tools.export_to_csv(results,
-                                self.sim_params.simulation_name(),
-                                self.sim_params.encoding)
+        tools.export_to_csv(results,
+                            self.sim_params)
