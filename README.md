@@ -28,7 +28,9 @@ Run the file `run.py` to start a simulation. If `plotResults` is set `True`, the
 - Tools were transformed from class into a set of functions;
 - Added Parameters and PlotSelection classes to avoid dictionary usage;
 - Added functionality to save the chart to files, use `save_plots` to save the charts;
-- Experiment class was added, you can use it to run simulations more than once.
+- Experiment class was added, you can use it to run simulations more than once;
+- The results are now saved to the folder named after the simulation, rather than the root of the save folder;
+- Added export to csv function, by runs and mean values, use `save_to_csv` to turn on saving.
 
 ## Requirements
 
